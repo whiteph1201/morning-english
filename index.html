@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>아침 영어 한 장</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 날짜 머리글 + 3개 탭(초3/초6/부모) + 표현 카드 3개 + 미니 대화. 탭마다 포인트 색이 다름 */
+:root{
+  --bg:#f3f9ff; --card:#ffffff; --fg:#1b2433; --muted:#5d6b82; --line:#d9e6f5;
+  --c3:#ff6b3d; --c3s:#ffe7dd; --c6:#1c8cff; --c6s:#dcedff; --cp:#10b08a; --cps:#d6f6ec;
+  --ca:#7c5cf0; --cas:#e9e3ff;
+  --accent:var(--c3); --accent-soft:var(--c3s);
+  --f-disp:'Jua','Noto Sans KR',sans-serif; --f-en:'Nunito','Noto Sans KR',sans-serif; --f-ko:'Noto Sans KR',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1826; --card:#18253a; --fg:#eef4ff; --muted:#9fb0cc; --line:#2a3b57;
+  --ca:#b39bff; --cas:#2a2250;
+  --c3:#ff8a63; --c3s:#3d2218; --c6:#59adff; --c6s:#12294a; --cp:#3fd6ae; --cps:#0f3a30; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1826; --card:#18253a; --fg:#eef4ff; --muted:#9fb0cc; --line:#2a3b57;
+  --ca:#b39bff; --cas:#2a2250;
+  --c3:#ff8a63; --c3s:#3d2218; --c6:#59adff; --c6s:#12294a; --cp:#3fd6ae; --cps:#0f3a30; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ko);margin:0;
+  padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body[data-tab="g6"]{--accent:var(--c6);--accent-soft:var(--c6s)}
+body[data-tab="pa"]{--accent:var(--cp);--accent-soft:var(--cps)}
+body[data-tab="ad"]{--accent:var(--ca);--accent-soft:var(--cas)}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
+.date{font-family:var(--f-disp);font-size:clamp(26px,6vw,38px);line-height:1.1;margin:0}
+.sub{color:var(--muted);font-size:14px;margin-top:4px}
+.nav{display:flex;gap:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+.nav button,.tools button{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;min-height:40px}
+.nav button:hover,.tools button:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.theme{background:var(--accent-soft);border-radius:14px;padding:12px 16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.theme b{font-family:var(--f-disp);font-weight:400;font-size:20px;color:var(--accent)}
+.theme span{font-size:14px;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:560px){.tabs{grid-template-columns:repeat(2,1fr)}}
+.tab{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px 6px;font-family:var(--f-disp);font-size:clamp(17px,4.4vw,22px);text-align:center}
+.tab small{display:block;font-family:var(--f-ko);font-size:12px;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"] small{color:#fff;opacity:.9}
+.tab[aria-selected="true"]{color:#fff}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.tools button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+#voiceSel{font:inherit;font-size:14px;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 12px;min-height:40px;max-width:100%}
+.vnote{background:#fff3cd;color:#5c4500;border:1px solid #f0d27a;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6}
+.tools .play{background:var(--accent);color:#fff;border-color:var(--accent)}
+h2{font-family:var(--f-disp);font-weight:400;font-size:18px;margin:6px 0 0;color:var(--accent)}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.card .txt{flex:1;min-width:0}
+.en{font-family:var(--f-en);font-weight:800;font-size:clamp(22px,5.4vw,30px);line-height:1.25;margin:0;overflow-wrap:anywhere}
+.pr{font-size:15px;color:var(--accent);margin-top:4px;font-weight:500}
+.ko{font-size:16px;color:var(--muted);margin-top:2px}
+.spk{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.spk svg{width:22px;height:22px}
+.spk.on{background:var(--accent);color:#fff}
+.dlg{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 18px}
+.dlg .card{border:0;border-bottom:1px dashed var(--line);border-radius:0;padding:14px 0}
+.dlg .card:last-child{border-bottom:0}
+.who{flex:none;width:30px;font-family:var(--f-disp);color:var(--accent);font-size:20px;padding-top:2px}
+.dlg .en{font-size:clamp(19px,4.8vw,25px)}
+body.hide-pr .pr{display:none}
+body.hide-ko .ko{display:none}
+
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px}
+.wc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:2px;position:relative;min-width:0}
+.pic{background:var(--accent-soft);border-radius:14px;height:96px;display:grid;place-items:center;font-size:56px;line-height:1;margin-bottom:8px}
+.wc .wen{font-family:var(--f-en);font-weight:800;font-size:23px;margin:0;overflow-wrap:anywhere}
+.wc .pr{margin-top:0}
+.wc .ex{font-family:var(--f-en);font-weight:600;font-size:14px;color:var(--fg);background:var(--accent-soft);border-radius:10px;padding:6px 10px;margin-top:8px}
+.wc .ex{cursor:pointer}
+.wc .ex .pr,.wc .ex .ko{font-size:13px;margin-top:3px;font-family:var(--f-ko)}
+.wc .ex .ko{color:var(--muted)}
+.sub2{color:var(--muted);font-size:14px;margin-top:-6px}
+.wc .spk{position:absolute;top:18px;right:18px;width:38px;height:38px;background:var(--card)}
+.wc .spk svg{width:19px;height:19px}
+@media print{.wgrid{grid-template-columns:repeat(3,1fr)}.pic{height:70px;font-size:40px}}
+.panel{display:none;flex-direction:column;gap:14px}
+.panel.active{display:flex}
+footer{color:var(--muted);font-size:13px;line-height:1.6}
+.printhead{display:none}
+@media print{
+  :root{--bg:#fff;--card:#fff;--fg:#000;--muted:#444;--line:#bbb}
+  body{padding:0}
+  .nav,.tabs,.tools,.spk,footer{display:none!important}
+  .panel{display:none!important}.panel.active{display:flex!important}
+  .printhead{display:block;font-size:13px;color:#444}
+  .card{break-inside:avoid}
+  .pr,.ko{display:block!important}
+  body.hide-pr .pr,body.hide-ko .ko{display:block!important}
+}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}body{margin:0;font-size:14px}img{max-width:100%}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 class="date" id="dateTxt"></h1>
+      <div class="sub" id="subTxt"></div>
+    </div>
+    <div class="nav" role="group" aria-label="날짜 이동">
+      <button id="prev" type="button">&larr; 어제</button>
+      <button id="today" type="button">오늘</button>
+      <button id="next" type="button">내일 &rarr;</button>
+    </div>
+  </header>
+
+  <div class="theme"><b id="themeTxt"></b><span id="themeSub"></span></div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-g3" data-t="g3" type="button">초등 3학년<small>쉬운 말</small></button>
+    <button class="tab" role="tab" id="t-g6" data-t="g6" type="button">초등 6학년<small>문장 늘리기</small></button>
+    <button class="tab" role="tab" id="t-pa" data-t="pa" type="button">부모님<small>생활 영어</small></button>
+    <button class="tab" role="tab" id="t-ad" data-t="ad" type="button">성인<small>1분 일상회화</small></button>
+  </div>
+
+  <div class="tools">
+    <button id="bPr" type="button" aria-pressed="true">한글 발음 ON</button>
+    <button id="bKo" type="button" aria-pressed="true">뜻 ON</button>
+    <button id="bSp" type="button" aria-pressed="false">천천히 듣기</button>
+    <button id="bAll" type="button" class="play">전체 듣기</button>
+    <select id="voiceSel" hidden aria-label="영어 목소리 고르기"></select>
+  </div>
+
+  <div class="vnote" id="voiceNote" hidden></div>
+  <div class="printhead" id="printHead"></div>
+  <main id="panels"><p class="sub2">오늘 내용을 불러오는 중…</p></main>
+
+  <footer>인쇄하려면 키보드의 Ctrl + P (맥은 ⌘ + P)를 누르세요. 지금 보고 있는 탭만 인쇄됩니다. 소리는 기기에 들어 있는 영어 음성을 사용하며, 먼저 소리 버튼을 한 번 눌러야 나옵니다. 날짜가 바뀌면 자동으로 다음 내용이 나오고, 매달 새로운 내용으로 바뀝니다.</footer>
+</div>
+
+<script src="config.js"></script>
+<script>
+const BASE=(window.ENGLISH_BASE||"").replace(/\/?$/,"/").replace(/^\/$/,"");
+/* 콘텐츠는 달마다 m/YYYY-MM/data.json 에서 불러옴. 날짜(1~30일)가 그달 콘텐츠 번호. 31일은 30일 내용 복습 */
+const TABS=[["g3","초등 3학년"],["g6","초등 6학년"],["pa","부모님"],["ad","성인"]];
+const WD=["일","월","화","수","목","금","토"];
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+let offset=0,tab="g3",slow=false,speaking=false;
+let months=null,cur=null;const monthCache={};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function baseDate(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate()+offset)}
+const mkey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+/* 그달 데이터가 있으면 그달, 마지막 달이 지나면 있는 달들을 순서대로 돌려 가며 보여 줌 */
+function pickMonth(k){
+  if(!months||!months.length)return "2026-10";
+  const ms=months.slice().sort();if(ms.includes(k))return k;
+  if(k<ms[0])return ms[0];
+  const toN=s=>Number(s.slice(0,4))*12+Number(s.slice(5,7))-1;
+  return ms[(toN(k)-toN(ms[0]))%ms.length];
+}
+function loadMonth(m){
+  if(!monthCache[m])monthCache[m]=fetch(BASE+"m/"+m+"/data.json").then(r=>{if(!r.ok)throw 0;return r.json()}).catch(e=>{delete monthCache[m];throw e});
+  return monthCache[m];
+}
+function cardHtml(x,lead){
+  return '<div class="card">'+(lead||'')+'<div class="txt"><p class="en">'+esc(x[0])+'</p>'+
+   (x[2]?'<div class="pr">'+esc(x[2])+'</div>':'')+'<div class="ko">'+esc(x[1])+'</div></div>'+
+   '<button type="button" class="spk" aria-label="듣기: '+esc(x[0])+'" data-say="'+esc(x[0])+'">'+SPK+'</button></div>';
+}
+function wordHtml(w){
+  return '<div class="wc"><div class="pic" aria-hidden="true">'+w[0]+'</div><p class="wen">'+esc(w[1])+'</p><div class="pr">'+esc(w[3])+'</div><div class="ko">'+esc(w[2])+'</div>'+
+  '<div class="ex" data-say="'+esc(w[4])+'">'+esc(w[4])+'<div class="pr">'+esc(w[6])+'</div><div class="ko">'+esc(w[5])+'</div></div>'+
+  '<button type="button" class="spk" aria-label="듣기: '+esc(w[1])+'" data-say="'+esc(w[1])+'" data-say2="'+esc(w[4])+'">'+SPK+'</button></div>';
+}
+const dlgHtml=d=>d.map((x,n)=>cardHtml(x,'<div class="who">'+(n%2?'B':'A')+'</div>')).join('');
+function panel(id,inner){return '<section class="panel'+(id===tab?' active':'')+'" id="p-'+id+'" role="tabpanel" aria-labelledby="t-'+id+'">'+inner+'</section>'}
+function kidPanel(id,p){
+  return panel(id,'<h2>오늘의 단어카드 '+p.w.length+'개</h2><div class="wgrid">'+p.w.map(wordHtml).join('')+'</div>'+
+   '<h2>오늘의 표현 '+p.e.length+'가지</h2><div class="cards">'+p.e.map(x=>cardHtml(x)).join('')+'</div>'+
+   '<h2>짧은 대화 (둘이 역할을 나눠 읽어요)</h2><div class="dlg">'+dlgHtml(p.d)+'</div>');
+}
+function bannerUpdate(){
+  if(!cur)return;const day=cur.day,n=cur.n;
+  if(tab==="ad"){$("themeTxt").textContent="오늘의 상황: "+day.ad.t;$("themeSub").textContent=day.ad.s+" · "+cur.label+" "+n+"일째"}
+  else{$("themeTxt").textContent="오늘의 주제: "+day.theme;$("themeSub").textContent=day.sub+" · "+cur.label+" "+n+"일째"}
+  $("printHead").textContent=$("dateTxt").textContent+" · "+(tab==="ad"?day.ad.t:day.theme)+" · "+TABS.find(x=>x[0]===tab)[1];
+}
+let renderSeq=0;
+async function render(){
+  const seq=++renderSeq;
+  const d=baseDate();
+  const ds=d.getFullYear()+"년 "+(d.getMonth()+1)+"월 "+d.getDate()+"일 ("+WD[d.getDay()]+")";
+  $("dateTxt").textContent=ds;
+  $("subTxt").textContent=offset===0?"오늘의 영어":(offset<0?"지난 영어":"다음 영어");
+  try{
+    if(!months){try{months=(await fetch(BASE+"m/months.json?d="+new Date().toISOString().slice(0,13)).then(r=>r.json())).months}catch(e){months=["2026-10"]}}
+    const m=pickMonth(mkey(d));const data=await loadMonth(m);
+    if(seq!==renderSeq)return;
+    const n=Math.min(d.getDate(),data.days.length);const day=data.days[n-1];
+    const mm=Number(m.slice(5));
+    cur={m,n,day,label:mm+"월 콘텐츠"};
+    $("panels").innerHTML=kidPanel("g3",day.g3)+kidPanel("g6",day.g6)+kidPanel("pa",day.pa)+
+      panel("ad",'<h2>핵심 표현 '+day.ad.k.length+'가지</h2><div class="cards">'+day.ad.k.map(x=>cardHtml(x)).join('')+'</div><h2>1분 대화 (둘이 역할을 나눠 읽어요)</h2><div class="dlg">'+dlgHtml(day.ad.d)+'</div>');
+    bannerUpdate();
+  }catch(e){
+    $("panels").innerHTML='<p class="sub2">오늘 내용을 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</p>';
+  }
+}
+function setTab(t){
+  tab=t;document.body.dataset.tab=t;
+  TABS.forEach(x=>{$("t-"+x[0]).setAttribute("aria-selected",x[0]===t?"true":"false");const p=$("p-"+x[0]);if(p)p.classList.toggle("active",x[0]===t)});
+  try{history.replaceState(null,"","#"+t)}catch(e){}
+  try{localStorage.setItem("eng-tab",t)}catch(e){}
+  bannerUpdate();stop();
+}
+/* 소리: 그달 폴더의 날짜별 음성 파일(dNN.mp3)과 위치표(idx.json)를 사용. 없으면 기기 음성 */
+let useFallback=false,ctx=null,curSrc=null,gapTimer=null;const audCache={},idxCache={};
+function loadIdx(m){if(!idxCache[m])idxCache[m]=fetch(BASE+"m/"+m+"/idx.json").then(r=>{if(!r.ok)throw 0;return r.json()}).catch(e=>{delete idxCache[m];throw e});return idxCache[m]}
+function loadAud(m,n){const k=m+"/"+n;if(!audCache[k])audCache[k]=fetch(BASE+"m/"+m+"/d"+String(n).padStart(2,"0")+".mp3").then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(b=>ctx.decodeAudioData(b)).catch(e=>{delete audCache[k];throw e});return audCache[k]}
+async function playClip(text,btn,done){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC||!cur)return false;
+  if(!ctx)ctx=new AC();
+  if(ctx.state==="suspended")await ctx.resume();
+  const idx=await loadIdx(cur.m);const e=(idx[String(cur.n)]||{})[text];if(!e)return false;
+  const buf=await loadAud(cur.m,cur.n);
+  if(curSrc){try{curSrc.onended=null;curSrc.stop()}catch(x){}}
+  const s=ctx.createBufferSource();s.buffer=buf;s.connect(ctx.destination);
+  s.playbackRate.value=slow?0.78:1;
+  curSrc=s;btn&&btn.classList.add("on");
+  s.onended=()=>{btn&&btn.classList.remove("on");if(curSrc===s)curSrc=null;if(done)done()};
+  s.start(0,e[0],e[1]+0.05);
+  return true;
+}
+function say(text,btn,done){playClip(text,btn,done).then(ok=>{if(!ok)sayTTS(text,btn,done)}).catch(()=>sayTTS(text,btn,done))}
+let chosen="";try{chosen=localStorage.getItem("eng-voice")||""}catch(e){}
+function score(v){
+  if(!/^en[-_](US|GB|AU)/i.test(v.lang))return -1;
+  let s=0;const n=v.name;
+  if(/natural|neural|online/i.test(n))s+=100;
+  if(/Aria|Jenny|Guy|Ava|Emma|Samantha|Allison|Siri|Zira|Karen|Moira|Serena/i.test(n))s+=40;
+  if(/Google/i.test(n))s+=30;if(/Premium|Enhanced/i.test(n))s+=60;if(/en[-_]US/i.test(v.lang))s+=10;if(/espeak|compact/i.test(n))s-=50;
+  return s;
+}
+function pickVoice(){const all=speechSynthesis.getVoices();const m=all.find(v=>v.name===chosen);if(m)return m;return all.filter(v=>score(v)>=0).sort((a,b)=>score(b)-score(a))[0]||null}
+function fillVoices(){
+  if(!useFallback||!("speechSynthesis" in window))return;
+  const list=speechSynthesis.getVoices().filter(v=>score(v)>=0).sort((a,b)=>score(b)-score(a));
+  const sel=$("voiceSel"),note=$("voiceNote");
+  if(!list.length){sel.hidden=true;if(speechSynthesis.getVoices().length){note.hidden=false;note.innerHTML='<b>이 기기에 영어 음성이 없어서 한국어 음성이 영어를 한글처럼 읽고 있습니다.</b><br>영어(미국) 음성을 설치하면 원어민 발음으로 들립니다. 윈도우: 설정 → 시간 및 언어 → 음성 → 음성 추가 → English (United States). 아이폰·아이패드: 설정 → 손쉬운 사용 → 말하기 콘텐츠 → 음성 → English. 안드로이드: 설정 → 일반 → 텍스트 음성 변환 → 언어에서 English(US) 설치.'}return}
+  note.hidden=true;sel.hidden=false;const c=pickVoice();
+  sel.innerHTML=list.map(v=>'<option value="'+esc(v.name)+'"'+(c&&c.name===v.name?' selected':'')+'>목소리: '+esc(v.name.replace(/^(Microsoft|Google)\s*/,''))+'</option>').join('');
+}
+$("voiceSel").onchange=function(){chosen=this.value;try{localStorage.setItem("eng-voice",chosen)}catch(e){}stop();sayTTS("Good morning! Let's learn English together.",null)};
+function sayTTS(text,btn,done){
+  useFallback=true;fillVoices();
+  if(!("speechSynthesis" in window)){if(done)done();return}
+  const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=slow?0.72:0.92;u.pitch=1.05;
+  const v=pickVoice();if(v){u.voice=v;u.lang=v.lang}
+  u.onstart=()=>btn&&btn.classList.add("on");
+  u.onend=u.onerror=()=>{btn&&btn.classList.remove("on");if(done)done()};
+  speechSynthesis.speak(u);
+}
+function playBtn(b,done){say(b.dataset.say,b,()=>{if(b.dataset.say2){gapTimer=setTimeout(()=>say(b.dataset.say2,b,done),1100)}else if(done)done()})}
+function stop(){speaking=false;clearTimeout(gapTimer);if(curSrc){try{curSrc.onended=null;curSrc.stop()}catch(e){}curSrc=null}try{speechSynthesis.cancel()}catch(e){}document.querySelectorAll(".spk.on").forEach(b=>b.classList.remove("on"));$("bAll").textContent="전체 듣기"}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".spk");if(b){stop();playBtn(b);return}
+  const x=e.target.closest(".wc .ex");if(x){stop();say(x.dataset.say,x.closest(".wc").querySelector(".spk"))}
+});
+$("bAll").onclick=()=>{
+  if(speaking){stop();return}
+  const btns=[...document.querySelectorAll("#p-"+tab+" .spk")];let n=0;speaking=true;$("bAll").textContent="멈추기";
+  const next=()=>{if(!speaking||n>=btns.length){stop();return}const b=btns[n++];playBtn(b,()=>{gapTimer=setTimeout(next,600)})};
+  next();
+};
+$("bSp").onclick=function(){slow=!slow;this.setAttribute("aria-pressed",slow)};
+$("bPr").onclick=function(){const on=this.getAttribute("aria-pressed")!=="true";this.setAttribute("aria-pressed",on);document.body.classList.toggle("hide-pr",!on);this.textContent=on?"한글 발음 ON":"한글 발음 OFF"};
+$("bKo").onclick=function(){const on=this.getAttribute("aria-pressed")!=="true";this.setAttribute("aria-pressed",on);document.body.classList.toggle("hide-ko",!on);this.textContent=on?"뜻 ON":"뜻 OFF"};
+const go=()=>{stop();render()};
+$("prev").onclick=()=>{offset--;go()};
+$("next").onclick=()=>{offset++;go()};
+$("today").onclick=()=>{offset=0;go()};
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+let init=location.hash.replace("#","");
+if(!["g3","g6","pa","ad"].includes(init)){try{init=localStorage.getItem("eng-tab")}catch(e){}}
+if(!["g3","g6","pa","ad"].includes(init))init="g3";
+setTab(init);render();
+if("speechSynthesis" in window){fillVoices();speechSynthesis.onvoiceschanged=fillVoices}
+/* 자정이 지나면 자동으로 다음 날 내용으로 */
+let lastDate=new Date().toDateString();
+setInterval(()=>{const t=new Date().toDateString();if(t!==lastDate){lastDate=t;if(offset===0)go()}},60000);
+</script>
+
+</body>
+</html>
