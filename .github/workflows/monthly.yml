@@ -1,0 +1,36 @@
+# 매달 22일: 다음 달 대화 내용(OpenAI) + 원어민 음성(Kokoro) 을 만들어 Supabase에 올림
+# incoming/YYYY-MM/ 에 ChatGPT 결과를 올려도 실행됨 (반자동)
+name: 2. 다음 달 콘텐츠 만들기
+on:
+  schedule:
+    - cron: '43 0 22 * *'   # 매달 22일 한국시간 오전 9시 43분
+  push:
+    paths: ['incoming/**']
+  workflow_dispatch:
+    inputs:
+      month: { description: '만들 달 (예: 2027-01). 비우면 다음 달', required: false }
+concurrency: { group: monthly, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+      KEEP_MONTHS: ${{ vars.KEEP_MONTHS }}
+      TARGET_MONTH: ${{ github.event.inputs.month }}
+      MODE: ${{ github.event_name == 'push' && 'incoming' || 'auto' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: 준비
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q kokoro-onnx soundfile
+      - uses: actions/cache@v4
+        with: { path: /tmp/kk, key: kokoro-v1.0-int8 }
+      - name: 만들고 올리기
+        run: bash tools/monthly.sh

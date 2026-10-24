@@ -1,0 +1,24 @@
+# 처음 한 번: 10월·11월 원어민 음성을 만들고, Supabase에 저장 공간(버킷)을 만들어 올림 (20~40분)
+name: 1. 처음 설정 (Supabase에 올리기)
+on: workflow_dispatch
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: 준비
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q kokoro-onnx soundfile
+      - uses: actions/cache@v4
+        with: { path: /tmp/kk, key: kokoro-v1.0-int8 }
+      - name: 원어민 음성 만들기
+        run: bash tools/seed_audio.sh
+      - name: Supabase에 올리기
+        run: python3 tools/supabase_sync.py init
